@@ -68,7 +68,7 @@ url-shortener-api/
   "shortUrl": "http://localhost:3000/abc123"
 }
 ```
-
+![alt text](image.png)
 ---
 
 ### 2. `GET /:code`
@@ -107,7 +107,7 @@ GET http://localhost:3000/stats/abc123
   "visitCount": 4
 }
 ```
-
+![alt text](image-1.png)
 ---
 
 ## ⚙️ Setup Instructions
