@@ -1,0 +1,24 @@
+const express = require('express');
+const dotenv = require('dotenv');
+const urlRoutes = require('./routes/urlRoutes');
+const connectDB = require('./db'); 
+const cors = require('cors');
+dotenv.config();
+
+const app = express();
+
+// Enable CORS for your frontend BEFORE routes
+app.use(cors({
+  origin: "http://localhost:5173", // Your frontend URL
+  methods: ["GET", "POST"],
+  credentials: true,
+}));
+
+app.use(express.json());
+
+connectDB();
+
+app.use('/', urlRoutes);
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
