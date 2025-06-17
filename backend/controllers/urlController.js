@@ -1,8 +1,8 @@
-const Url = require('../models/Url');
-const validator = require('validator');
-const generateCode = require('../utils/generateCode');
+const Url = require("../models/Url");
+const validator = require("validator");
+const generateCode = require("../utils/generateCode").default;
 
-require('dotenv').config();
+require("dotenv").config();
 
 const BASE_URL = process.env.BASE_URL;
 
@@ -11,7 +11,7 @@ exports.createShortUrl = async (req, res) => {
   const { longUrl } = req.body;
 
   if (!validator.isURL(longUrl)) {
-    return res.status(400).json({ error: 'Invalid URL' });
+    return res.status(400).json({ error: "Invalid URL" });
   }
 
   const code = generateCode();
@@ -22,7 +22,7 @@ exports.createShortUrl = async (req, res) => {
     await newUrl.save();
     res.json({ shortUrl });
   } catch (err) {
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: "Server error" });
   }
 };
 
@@ -34,14 +34,14 @@ exports.redirectToLongUrl = async (req, res) => {
     const url = await Url.findOne({ code });
 
     if (!url) {
-      return res.status(404).json({ error: 'Short URL not found' });
+      return res.status(404).json({ error: "Short URL not found" });
     }
 
     url.visitCount += 1;
     await url.save();
     res.redirect(url.longUrl);
   } catch (err) {
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: "Server error" });
   }
 };
 
@@ -53,7 +53,7 @@ exports.getUrlStats = async (req, res) => {
     const url = await Url.findOne({ code });
 
     if (!url) {
-      return res.status(404).json({ error: 'Stats not found' });
+      return res.status(404).json({ error: "Stats not found" });
     }
 
     res.json({
@@ -62,6 +62,6 @@ exports.getUrlStats = async (req, res) => {
       visitCount: url.visitCount,
     });
   } catch (err) {
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: "Server error" });
   }
 };

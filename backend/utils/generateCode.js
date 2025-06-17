@@ -1,7 +1,7 @@
-const { nanoid } = require('nanoid');
+import { nanoid } from "nanoid";
 
 function generateCode() {
   return nanoid(8);
 }
 
-module.exports = generateCode;
+export default generateCode;
