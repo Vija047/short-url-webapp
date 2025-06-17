@@ -1,6 +1,6 @@
 const Url = require("../models/Url");
 const validator = require("validator");
-const generateCode = require("../utils/generateCode").default;
+const generateCode = require("../utils/generateCode"); // ✅ Fixed import
 
 require("dotenv").config();
 
