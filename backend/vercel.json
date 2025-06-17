@@ -7,8 +7,9 @@
     }
   ],
   "routes": [
-    { "src": "/shorten", "dest": "/index.js" },
-    { "src": "/stats/(.*)", "dest": "/index.js" },
-    { "src": "/(.*)", "dest": "/index.js" }
+    {
+      "src": "/(.*)",
+      "dest": "/index.js"
+    }
   ]
 }
