@@ -16,7 +16,7 @@ export default function App() {
     
     try {
       // Simulate API call since we can't use axios
-      const response = await fetch('http://localhost:3000/shorten/', {
+      const response = await fetch('https://short-url-webapp-blond.vercel.app/shorten/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ export default function App() {
 
   const fetchStats = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/stats/${code}`);
+      const response = await fetch(`https://short-url-webapp-blond.vercel.app/stats/${code}`);
       
       if (!response.ok) {
         throw new Error('Failed to fetch stats');
