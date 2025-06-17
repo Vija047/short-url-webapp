@@ -19,6 +19,9 @@ app.use(express.json());
 connectDB();
 
 app.use('/', urlRoutes);
+app.get("/",(req,res)=>{
+  res.send("Welcome to the URL Shortener API");
+})
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
