@@ -16,7 +16,7 @@ export default function App() {
     
     try {
       // Simulate API call since we can't use axios
-      const response = await fetch('https://short-url-webapp-blond.vercel.app/shorten/', {
+      const response = await fetch('https://short-url-webapp-blond.vercel.app/shorten', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
