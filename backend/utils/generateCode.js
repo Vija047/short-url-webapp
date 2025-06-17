@@ -1,5 +1,6 @@
-async function generateCode(length = 6) {
-  const { nanoid } = await import('nanoid');
+const { nanoid } = require('nanoid');
+
+function generateCode(length = 6) {
   return nanoid(length);
 }
 
