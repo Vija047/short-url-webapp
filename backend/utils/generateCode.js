@@ -1,7 +1,6 @@
-import { nanoid } from "nanoid";
-
-function generateCode() {
-  return nanoid(8);
+async function generateCode(length = 6) {
+  const { nanoid } = await import('nanoid');
+  return nanoid(length);
 }
 
-export default generateCode;
+module.exports = generateCode;
