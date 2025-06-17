@@ -1,7 +1,7 @@
 const { nanoid } = require('nanoid');
 
-function generateCode(length = 6) {
-  return nanoid(length);
+function generateCode() {
+  return nanoid(8);
 }
 
 module.exports = generateCode;
