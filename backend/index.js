@@ -11,11 +11,11 @@ app.use(
   cors({
     origin: [
       "https://short-url-webapp-pjsh.vercel.app",
+      "https://short-url-webapp-bj5nd.vercel.app",
       "https://short-url-webapp-blond.vercel.app",
-      "http://localhost:5173",
     ],
     methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Accept"],
+    allowedHeaders: ["Content-Type"],
   })
 );
 

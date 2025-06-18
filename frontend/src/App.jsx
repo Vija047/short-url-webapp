@@ -20,8 +20,9 @@ export default function App() {
     }
 
     try {
+      // Update this URL to match your deployed backend URL
       const response = await fetch(
-        "https://short-url-webapp-blond.vercel.app/shorten",
+        "https://short-url-webapp-bj5nd.vercel.app/shorten",
         {
           method: "POST",
           headers: {
@@ -31,12 +32,18 @@ export default function App() {
         }
       );
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to shorten URL");
+        throw new Error(data.error || "Failed to shorten URL");
       }
 
-      const data = await response.json();
+      console.log("Response data:", data); // Debug log
+
+      if (!data.shortUrl) {
+        throw new Error("Invalid response format");
+      }
+
       setShortUrl(data.shortUrl);
       const shortCode = data.shortUrl.split("/").pop();
       setCode(shortCode);
@@ -48,8 +55,9 @@ export default function App() {
 
   const fetchStats = async () => {
     try {
+      // Update this URL to match your deployed backend URL
       const response = await fetch(
-        `https://short-url-webapp-blond.vercel.app/stats/${code}`
+        `https://short-url-webapp-bj5nd.vercel.app/stats/${code}`
       );
 
       if (!response.ok) {
@@ -238,7 +246,5 @@ export default function App() {
         )}
       </div>
     </div>
-  );
-}
   );
 }
