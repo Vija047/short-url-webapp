@@ -20,7 +20,7 @@ export default function App() {
     }
 
     try {
-      // Update this URL to match your deployed backend URL
+      // Using the correct backend URL
       const response = await fetch(
         "https://short-url-webapp-bj5nd.vercel.app/shorten",
         {
@@ -28,19 +28,31 @@ export default function App() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ longUrl }),
+          body: JSON.stringify({
+            longUrl: longUrl.startsWith("http")
+              ? longUrl
+              : `https://${longUrl}`,
+          }),
         }
       );
 
-      const data = await response.json();
+      // Log response for debugging
+      console.log("Response status:", response.status);
+
+      let data;
+      try {
+        data = await response.json();
+        console.log("Response data:", data);
+      } catch (e) {
+        console.error("Failed to parse response:", e);
+        throw new Error("Invalid server response");
+      }
 
       if (!response.ok) {
         throw new Error(data.error || "Failed to shorten URL");
       }
 
-      console.log("Response data:", data); // Debug log
-
-      if (!data.shortUrl) {
+      if (!data || !data.shortUrl) {
         throw new Error("Invalid response format");
       }
 
@@ -48,26 +60,29 @@ export default function App() {
       const shortCode = data.shortUrl.split("/").pop();
       setCode(shortCode);
     } catch (err) {
-      console.error("Error details:", err);
+      console.error("Full error:", err);
       setError(err.message || "Failed to connect to the server");
     }
   };
 
   const fetchStats = async () => {
     try {
-      // Update this URL to match your deployed backend URL
       const response = await fetch(
         `https://short-url-webapp-bj5nd.vercel.app/stats/${code}`
       );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch stats");
-      }
+      console.log("Stats response:", response.status);
 
       const data = await response.json();
+      console.log("Stats data:", data);
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to fetch stats");
+      }
+
       setStats(data);
     } catch (err) {
-      setError(err.message || "Stats fetch failed");
+      console.error("Stats error:", err);
+      setError(err.message || "Failed to fetch stats");
     }
   };
 
