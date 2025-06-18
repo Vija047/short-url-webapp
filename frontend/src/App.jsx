@@ -21,29 +21,27 @@ export default function App() {
 
     try {
       const response = await fetch(
-        "https://short-url-webapp-bj5nd.vercel.app/shorten",
+        "https://short-url-webapp-blond.vercel.app/shorten",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Accept: "application/json",
           },
           body: JSON.stringify({ longUrl }),
-          credentials: "include",
         }
       );
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.error || "Failed to shorten URL");
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to shorten URL");
       }
 
+      const data = await response.json();
       setShortUrl(data.shortUrl);
       const shortCode = data.shortUrl.split("/").pop();
       setCode(shortCode);
     } catch (err) {
-      console.error("Error:", err);
+      console.error("Error details:", err);
       setError(err.message || "Failed to connect to the server");
     }
   };
@@ -240,5 +238,7 @@ export default function App() {
         )}
       </div>
     </div>
+  );
+}
   );
 }
