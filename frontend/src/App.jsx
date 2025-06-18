@@ -14,53 +14,30 @@ export default function App() {
     setShortUrl("");
     setStats(null);
 
-    if (!longUrl) {
-      setError("Please enter a URL");
-      return;
-    }
-
     try {
-      // Using the correct backend URL
       const response = await fetch(
-        "https://short-url-webapp-bj5nd.vercel.app/shorten",
+        "https://short-url-webapp-blond.vercel.app/shorten",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            longUrl: longUrl.startsWith("http")
-              ? longUrl
-              : `https://${longUrl}`,
-          }),
+          body: JSON.stringify({ longUrl }),
+          mode: "cors", // Add this line
         }
       );
 
-      // Log response for debugging
-      console.log("Response status:", response.status);
-
-      let data;
-      try {
-        data = await response.json();
-        console.log("Response data:", data);
-      } catch (e) {
-        console.error("Failed to parse response:", e);
-        throw new Error("Invalid server response");
-      }
-
       if (!response.ok) {
-        throw new Error(data.error || "Failed to shorten URL");
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to shorten URL");
       }
 
-      if (!data || !data.shortUrl) {
-        throw new Error("Invalid response format");
-      }
-
+      const data = await response.json();
       setShortUrl(data.shortUrl);
       const shortCode = data.shortUrl.split("/").pop();
       setCode(shortCode);
     } catch (err) {
-      console.error("Full error:", err);
+      console.error("Error:", err);
       setError(err.message || "Failed to connect to the server");
     }
   };
@@ -68,21 +45,17 @@ export default function App() {
   const fetchStats = async () => {
     try {
       const response = await fetch(
-        `https://short-url-webapp-bj5nd.vercel.app/stats/${code}`
+        `https://short-url-webapp-blond.vercel.app/stats/${code}`
       );
-      console.log("Stats response:", response.status);
-
-      const data = await response.json();
-      console.log("Stats data:", data);
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to fetch stats");
+        throw new Error("Failed to fetch stats");
       }
 
+      const data = await response.json();
       setStats(data);
     } catch (err) {
-      console.error("Stats error:", err);
-      setError(err.message || "Failed to fetch stats");
+      setError(err.message || "Stats fetch failed");
     }
   };
 

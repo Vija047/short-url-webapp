@@ -8,37 +8,21 @@ const BASE_URL = process.env.BASE_URL;
 
 // POST /shorten
 exports.createShortUrl = async (req, res) => {
-  console.log("Request body:", req.body);
   const { longUrl } = req.body;
 
-  if (!longUrl) {
-    console.log("Missing URL in request");
-    return res.status(400).json({ error: "URL is required" });
+  if (!validator.isURL(longUrl)) {
+    return res.status(400).json({ error: "Invalid URL" });
   }
 
-  let urlToShorten = longUrl;
-  if (!urlToShorten.startsWith("http")) {
-    urlToShorten = `https://${urlToShorten}`;
-  }
-
-  if (!validator.isURL(urlToShorten)) {
-    console.log("Invalid URL format:", urlToShorten);
-    return res.status(400).json({ error: "Invalid URL format" });
-  }
+  const code = generateCode();
+  const shortUrl = `${BASE_URL}/${code}`;
 
   try {
-    const code = generateCode();
-    const shortUrl = `${BASE_URL}/${code}`;
-    console.log("Generated short URL:", shortUrl);
-
-    const newUrl = new Url({ code, longUrl: urlToShorten });
+    const newUrl = new Url({ code, longUrl });
     await newUrl.save();
-
-    console.log("URL saved successfully");
-    return res.json({ shortUrl });
+    res.json({ shortUrl });
   } catch (err) {
-    console.error("Error creating short URL:", err);
-    return res.status(500).json({ error: "Failed to create short URL" });
+    res.status(500).json({ error: "Server error" });
   }
 };
 
