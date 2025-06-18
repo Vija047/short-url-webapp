@@ -9,7 +9,7 @@ const app = express();
 
 // Enable CORS for your frontend BEFORE routes
 app.use(cors({
-  origin: "https://short-url-webapp-pjsh.vercel.app", 
+  origin: "https://short-url-webapp-pjsh.vercel.app/", 
   methods: ["GET", "POST"],
   credentials: true,
 }));
