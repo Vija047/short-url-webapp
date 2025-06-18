@@ -8,7 +8,8 @@ dotenv.config();
 
 const app = express();
 app.use(cors({
-  origin: "https://short-url-webapp-pjsh.vercel.app",
+  
+  origin: ["https://short-url-webapp-pjsh.vercel.app","http://localhost:5173"],
   methods: ["GET", "POST"],
   credentials: true,
 }));
