@@ -10,19 +10,23 @@ const BASE_URL = process.env.BASE_URL;
 exports.createShortUrl = async (req, res) => {
   const { longUrl } = req.body;
 
-  if (!validator.isURL(longUrl)) {
-    return res.status(400).json({ error: "Invalid URL" });
+  if (!longUrl) {
+    return res.status(400).json({ error: "URL is required" });
   }
 
-  const code = generateCode();
-  const shortUrl = `${BASE_URL}/${code}`;
+  if (!validator.isURL(longUrl)) {
+    return res.status(400).json({ error: "Invalid URL format" });
+  }
 
   try {
+    const code = generateCode();
+    const shortUrl = `${BASE_URL}/${code}`;
     const newUrl = new Url({ code, longUrl });
     await newUrl.save();
     res.json({ shortUrl });
   } catch (err) {
-    res.status(500).json({ error: "Server error" });
+    console.error("Error:", err);
+    res.status(500).json({ error: "Failed to create short URL" });
   }
 };
 
