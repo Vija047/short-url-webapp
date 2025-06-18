@@ -26,8 +26,9 @@ export default function App() {
       
       if (!response.ok) {
         throw new Error('Failed to shorten URL');
+
       }
-      
+      console.log(response);
       const data = await response.json();
       setShortUrl(data.shortUrl);
       const shortCode = data.shortUrl.split('/').pop();
