@@ -23,14 +23,14 @@ export default function App() {
         },
         body: JSON.stringify({ longUrl }),
       });
-      
+      console.log(longUrl);
+      console.log(error);
+      console.log(response);
       if (!response.ok) {
         throw new Error('Failed to shorten URL');
 
       }
-      console.log(longUrl);
-      console.log(error);
-      console.log(response);
+      
       const data = await response.json();
       setShortUrl(data.shortUrl);
       const shortCode = data.shortUrl.split('/').pop();
