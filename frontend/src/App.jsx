@@ -28,6 +28,7 @@ export default function App() {
         throw new Error('Failed to shorten URL');
 
       }
+      console.log(error);
       console.log(response);
       const data = await response.json();
       setShortUrl(data.shortUrl);
