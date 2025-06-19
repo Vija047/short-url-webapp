@@ -14,6 +14,11 @@ export default function App() {
     setShortUrl("");
     setStats(null);
 
+    if (!longUrl) {
+      setError("Please enter a URL");
+      return;
+    }
+
     try {
       const response = await fetch(
         "https://short-url-webapp-blond.vercel.app/shorten",
@@ -22,23 +27,29 @@ export default function App() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ longUrl }),
-          mode: "cors", // Add this line
+          body: JSON.stringify({
+            longUrl: longUrl.startsWith("http")
+              ? longUrl
+              : `https://${longUrl}`,
+          }),
         }
       );
 
+      // Add response status logging
+      console.log("Response status:", response.status);
+      const data = await response.json();
+      console.log("Response data:", data);
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to shorten URL");
+        throw new Error(data.error || "Failed to shorten URL");
       }
 
-      const data = await response.json();
       setShortUrl(data.shortUrl);
       const shortCode = data.shortUrl.split("/").pop();
       setCode(shortCode);
     } catch (err) {
-      console.error("Error:", err);
-      setError(err.message || "Failed to connect to the server");
+      console.error("Error details:", err);
+      setError("Server error. Please try again.");
     }
   };
 
