@@ -11,8 +11,9 @@ app.use(
   cors({
     origin: [
       "https://short-url-webapp-pjsh.vercel.app",
+      "https://short-url-webapp-blond.vercel.app",
     ],
-    methods: ["GET", "POST", "OPTIONS"],
+    methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
     credentials: false,
   })
@@ -26,6 +27,12 @@ app.use("/", urlRoutes);
 
 app.get("/", (req, res) => {
   res.send("Welcome to the URL Shortener API");
+});
+
+// Add error handling middleware
+app.use((err, req, res, next) => {
+  console.error("Server Error:", err);
+  res.status(500).json({ error: "Server error", message: err.message });
 });
 
 const PORT = process.env.PORT || 3000;
