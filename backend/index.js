@@ -21,6 +21,21 @@ app.use(
 
 app.use(express.json());
 
+// Add request logging middleware
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path}`, req.body);
+  next();
+});
+
+app.use(
+  cors({
+    origin: "*", // Allow all origins temporarily to debug
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type"],
+    credentials: false,
+  })
+);
+
 connectDB();
 
 app.use("/", urlRoutes);
