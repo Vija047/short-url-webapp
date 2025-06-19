@@ -8,43 +8,21 @@ const BASE_URL = process.env.BASE_URL;
 
 // POST /shorten
 exports.createShortUrl = async (req, res) => {
+  const { longUrl } = req.body;
+
+  if (!validator.isURL(longUrl)) {
+    return res.status(400).json({ error: "Invalid URL" });
+  }
+
+  const code = generateCode();
+  const shortUrl = `${BASE_URL}/${code}`;
+
   try {
-    const { longUrl } = req.body;
-    console.log("Request body:", req.body);
-
-    if (!longUrl) {
-      console.log("Missing URL");
-      return res.status(400).json({ error: "URL is required" });
-    }
-
-    let urlToShorten = longUrl;
-    if (!urlToShorten.startsWith("http")) {
-      urlToShorten = `https://${urlToShorten}`;
-    }
-
-    if (!validator.isURL(urlToShorten, { require_protocol: true })) {
-      console.log("Invalid URL:", urlToShorten);
-      return res.status(400).json({ error: "Invalid URL format" });
-    }
-
-    const code = generateCode();
-    const shortUrl = `${BASE_URL}/${code}`;
-    console.log("Generated:", { code, shortUrl });
-
-    const newUrl = new Url({ code, longUrl: urlToShorten });
+    const newUrl = new Url({ code, longUrl });
     await newUrl.save();
-
-    console.log("Saved successfully");
-    return res.status(200).json({ shortUrl });
+    res.json({ shortUrl });
   } catch (err) {
-    console.error("Server error:", err);
-    return res.status(500).json({
-      error: "Server error",
-      message:
-        process.env.NODE_ENV === "development"
-          ? err.message
-          : "Internal server error",
-    });
+    res.status(500).json({ error: "Server error" });
   }
 };
 

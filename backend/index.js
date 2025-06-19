@@ -7,13 +7,15 @@ const cors = require("cors");
 dotenv.config();
 
 const app = express();
+
+// Single CORS configuration
 app.use(
   cors({
     origin: [
       "https://short-url-webapp-pjsh.vercel.app",
       "https://short-url-webapp-blond.vercel.app",
     ],
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type"],
     credentials: false,
   })
@@ -21,20 +23,11 @@ app.use(
 
 app.use(express.json());
 
-// Add request logging middleware
+// Request logging
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.path}`, req.body);
   next();
 });
-
-app.use(
-  cors({
-    origin: "*", // Allow all origins temporarily to debug
-    methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type"],
-    credentials: false,
-  })
-);
 
 connectDB();
 
@@ -44,10 +37,10 @@ app.get("/", (req, res) => {
   res.send("Welcome to the URL Shortener API");
 });
 
-// Add error handling middleware
+// Error handling middleware
 app.use((err, req, res, next) => {
   console.error("Server Error:", err);
-  res.status(500).json({ error: "Server error", message: err.message });
+  res.status(500).json({ error: "Server error" });
 });
 
 const PORT = process.env.PORT || 3000;

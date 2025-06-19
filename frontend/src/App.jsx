@@ -35,10 +35,8 @@ export default function App() {
         }
       );
 
-      // Add response status logging
-      console.log("Response status:", response.status);
       const data = await response.json();
-      console.log("Response data:", data);
+      console.log("Response:", response.status, data);
 
       if (!response.ok) {
         throw new Error(data.error || "Failed to shorten URL");
@@ -49,7 +47,7 @@ export default function App() {
       setCode(shortCode);
     } catch (err) {
       console.error("Error details:", err);
-      setError("Server error. Please try again.");
+      setError("Server error. Please try again later.");
     }
   };
 
