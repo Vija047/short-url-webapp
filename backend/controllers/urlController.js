@@ -14,14 +14,15 @@ exports.createShortUrl = async (req, res) => {
     return res.status(400).json({ error: "Invalid URL" });
   }
 
-  const code = generateCode();
-  const shortUrl = `${BASE_URL}/${code}`;
-
   try {
+    const code = await generateCode(); // <-- FIX: add await here
+    const shortUrl = `${BASE_URL}/${code}`;
+
     const newUrl = new Url({ code, longUrl });
     await newUrl.save();
     res.json({ shortUrl });
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: "Server error" });
   }
 };

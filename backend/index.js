@@ -11,10 +11,7 @@ const app = express();
 // Single CORS configuration
 app.use(
   cors({
-    origin: [
-      "https://short-url-webapp-pjsh.vercel.app",
-      "https://short-url-webapp-blond.vercel.app",
-    ],
+    origin: ["http://localhost:5173"],
     methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type"],
     credentials: false,

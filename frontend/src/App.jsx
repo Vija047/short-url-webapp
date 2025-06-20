@@ -21,7 +21,7 @@ export default function App() {
 
     try {
       const response = await fetch(
-        "https://short-url-webapp-blond.vercel.app/shorten",
+        "http://localhost:3000/shorten/",
         {
           method: "POST",
           headers: {
@@ -54,7 +54,7 @@ export default function App() {
   const fetchStats = async () => {
     try {
       const response = await fetch(
-        `https://short-url-webapp-blond.vercel.app/stats/${code}`
+        `http://localhost:3000/stats/${code}`
       );
 
       if (!response.ok) {
